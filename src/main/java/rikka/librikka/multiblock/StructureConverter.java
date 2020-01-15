@@ -131,7 +131,7 @@ public class StructureConverter
                         this.world.setBlockState(pos, isotopeWithRPosition.getAfter());
 
                         // 移除已经存在的TileEntity
-//                        world.removeTileEntity(pos);
+//                        world.removeTileEntity(pos); // 注释掉的原因是设置新的TileEntity隐含着移除旧的
 
                         TileEntity tileEntity = this.world.getTileEntity(pos);
 

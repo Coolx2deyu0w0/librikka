@@ -15,31 +15,37 @@ import java.util.HashMap;
 
 /**
  * A block variant uses the same texture for all 6 sides / An item with single texture
+ * [这种“BlockVariant”是六个面都是用同一种纹理的方块]
  *
  * @author Rikka0_0
  */
 @SideOnly(Side.CLIENT)
-public class SimpleTextureVariant extends Variant {
-    private static final ResourceLocation generated = new ResourceLocation("minecraft:item/generated");
-    private static final ResourceLocation cube_all = new ResourceLocation("minecraft:block/cube_all");
+public class SimpleTextureVariant extends Variant
+{
+    private static final ResourceLocation GENERATED = new ResourceLocation("minecraft:item/generated");
+    private static final ResourceLocation CUBE_ALL  = new ResourceLocation("minecraft:block/cube_all");
 
     private final ImmutableMap<String, String> textures;
     private final ImmutableMap<String, String> customData;
-    private final IModelState state;
-    private final boolean isGui3d;
+    private final IModelState                  state;
+    private final boolean                      isGui3d;
 
     /**
      * @param texture the REAL texture path, e.g. sime:tool_multimeter
      * @param isBlock
      */
-    public SimpleTextureVariant(String texture, boolean isBlock) {
+    public SimpleTextureVariant(String texture, boolean isBlock)
+    {
         this(TRSRTransformation.identity(), texture, isBlock);
     }
 
-    private SimpleTextureVariant(IModelState state, String texture, boolean isBlock) {
-        super(isBlock ? SimpleTextureVariant.cube_all : SimpleTextureVariant.generated
-                , state instanceof ModelRotation ? (ModelRotation) state : ModelRotation.X0_Y0
-                , false, 1);    //uvLock = false, weight always 1
+    private SimpleTextureVariant(IModelState state, String texture, boolean isBlock)
+    {
+        super(
+                isBlock ? SimpleTextureVariant.CUBE_ALL : SimpleTextureVariant.GENERATED,
+                state instanceof ModelRotation ? (ModelRotation) state : ModelRotation.X0_Y0,
+                false, 1
+        );    //uvLock = false, weight always 1
 
 
         Builder<String, String> builder = ImmutableMap.builder();
@@ -54,7 +60,8 @@ public class SimpleTextureVariant extends Variant {
     }
 
     @Override
-    public IModelState getState() {
+    public IModelState getState()
+    {
         return this.state;
     }
 
@@ -69,7 +76,8 @@ public class SimpleTextureVariant extends Variant {
     }
 
     @Override
-    public IModel process(IModel base) {
+    public IModel process(IModel base)
+    {
         //base must be cube_all
         //texture string,string {all=minecraft:blocks/diamond_block}
         //ImmutableMap<String, String> customData

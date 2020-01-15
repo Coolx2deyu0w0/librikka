@@ -10,9 +10,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public abstract class TileEntityBase extends TileEntity {
+public abstract class TileEntityBase extends TileEntity
+{
     @Override
-    public void onChunkUnload() {
+    public void onChunkUnload()
+    {
         this.invalidate();
     }
 
@@ -29,18 +31,24 @@ public abstract class TileEntityBase extends TileEntity {
      * 3. If you are not sure, put: return oldState != newState;
      */
     @Override
-    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState) {
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newState)
+    {
         return oldState != newState;
         //return (oldState.getBlock() != newState.getBlock());	//Was "return !isVanilla || (oldBlock != newBlock);" in 1.7.10
     }
 
 
-    protected void markTileEntityForS2CSync() {
+    protected void markTileEntityForS2CSync()
+    {
         this.world.notifyBlockUpdate(this.getPos(), this.world.getBlockState(this.getPos()), this.world.getBlockState(this.getPos()), 2);
     }
 
+    /**
+     * 将此TileEntity标记为渲染更新
+     */
     @SideOnly(Side.CLIENT)
-    protected void markForRenderUpdate() {
+    protected void markForRenderUpdate()
+    {
         this.world.notifyBlockUpdate(this.getPos(), this.world.getBlockState(this.getPos()), this.world.getBlockState(this.getPos()), 1);
     }
 
@@ -51,15 +59,18 @@ public abstract class TileEntityBase extends TileEntity {
     //  getUpdateTag() and handleUpdateTag() are used by vanilla to collate together into a single chunk update packet
 
     //Sync
-    public void prepareS2CPacketData(NBTTagCompound nbt) {
+    public void prepareS2CPacketData(NBTTagCompound nbt)
+    {
     }
 
     @SideOnly(Side.CLIENT)
-    public void onSyncDataFromServerArrived(NBTTagCompound nbt) {
+    public void onSyncDataFromServerArrived(NBTTagCompound nbt)
+    {
     }
 
     @Override
-    public final SPacketUpdateTileEntity getUpdatePacket() {
+    public final SPacketUpdateTileEntity getUpdatePacket()
+    {
         //System.out.println("[DEBUG]:Server sent tile sync packet");
         NBTTagCompound tagCompound = new NBTTagCompound();
         this.prepareS2CPacketData(tagCompound);
@@ -68,7 +79,8 @@ public abstract class TileEntityBase extends TileEntity {
 
     @Override
     @SideOnly(Side.CLIENT)
-    public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt) {
+    public final void onDataPacket(NetworkManager net, SPacketUpdateTileEntity pkt)
+    {
 
         if (this.world.isRemote) {
             //System.out.println("[DEBUG]:Client recived INDIVIDUAL tileSync packet");	//Debug
@@ -83,7 +95,8 @@ public abstract class TileEntityBase extends TileEntity {
      * Chunk Sync
      */
     @Override
-    public final NBTTagCompound getUpdateTag() {
+    public final NBTTagCompound getUpdateTag()
+    {
         NBTTagCompound nbt = super.getUpdateTag();
 
         //Prepare custom payload
@@ -102,7 +115,8 @@ public abstract class TileEntityBase extends TileEntity {
      */
     @Override
     @SideOnly(Side.CLIENT)
-    public void handleUpdateTag(NBTTagCompound tag) {
+    public void handleUpdateTag(NBTTagCompound tag)
+    {
         readFromNBT(tag);
 
         if (this.world.isRemote) {

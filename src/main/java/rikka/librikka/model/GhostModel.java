@@ -1,6 +1,7 @@
 package rikka.librikka.model;
 
 import java.util.function.Function;
+
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.BakedQuad;
@@ -13,35 +14,41 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 
 /**
- * An invisible model
+ * 一个隐形的模型
  *
  * @author Rikka0_0
  */
 @SideOnly(Side.CLIENT)
-public class GhostModel extends CodeBasedModel {
-    private final ResourceLocation texture;
-    private TextureAtlasSprite loadedTexture;
+public class GhostModel extends CodeBasedModel
+{
+    private final ResourceLocation   texture;
+    private       TextureAtlasSprite loadedTexture;
 
-    public GhostModel() {
+    public GhostModel()
+    {
         texture = this.registerTexture("minecraft:blocks/iron_block");
     }
-    
-    public GhostModel(String particleTexture) {
+
+    public GhostModel(String particleTexture)
+    {
         texture = this.registerTexture(particleTexture);
     }
 
     @Override
-    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
+    public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand)
+    {
         return ImmutableList.of();
     }
 
     @Override
-    public TextureAtlasSprite getParticleTexture() {
+    public TextureAtlasSprite getParticleTexture()
+    {
         return this.loadedTexture;
     }
 
     @Override
-    protected void bake(Function<ResourceLocation, TextureAtlasSprite> registry) {
+    protected void bake(Function<ResourceLocation, TextureAtlasSprite> registry)
+    {
         loadedTexture = registry.apply(this.texture);
     }
 }
