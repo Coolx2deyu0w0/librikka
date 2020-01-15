@@ -15,19 +15,22 @@ import net.minecraft.world.ChunkCache;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import rikka.librikka.multiblock.StructureFacing;
 
 import java.util.Random;
 
-public class Utils {
+public class Utils
+{
     public static final EnumFacing[] horizontalInverted = new EnumFacing[]{EnumFacing.SOUTH, EnumFacing.EAST, EnumFacing.NORTH, EnumFacing.WEST};
 
     /**
      * @param player
      * @return the direction where the player/entity is looking at
      */
-    public static final EnumFacing getPlayerSight(Entity player) {
+    public static final EnumFacing getPlayerSight(Entity player)
+    {
         int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int pitch = Math.round(player.rotationPitch);
+        int pitch   = Math.round(player.rotationPitch);
 
         if (pitch >= 65)
             return EnumFacing.DOWN;  //1
@@ -38,7 +41,8 @@ public class Utils {
         return getEnumFacing(heading);
     }
 
-    private static EnumFacing getEnumFacing(int heading) {
+    private static EnumFacing getEnumFacing(int heading)
+    {
         switch (heading) {
             case 0:
                 return EnumFacing.SOUTH; //2
@@ -53,7 +57,8 @@ public class Utils {
         }
     }
 
-    public static final EnumFacing getPlayerSightHorizontal(Entity player) {
+    public static final EnumFacing getPlayerSightHorizontal(Entity player)
+    {
         int heading = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 
         return getEnumFacing(heading);
@@ -62,7 +67,8 @@ public class Utils {
     /**
      * Drop items inside the inventory
      */
-    public static final void dropItemIntoWorld(World world, BlockPos pos, ItemStack item) {
+    public static final void dropItemIntoWorld(World world, BlockPos pos, ItemStack item)
+    {
         Random rand = new Random();
 
         if (item != null && item.getCount() > 0) {
@@ -87,29 +93,36 @@ public class Utils {
         }
     }
 
-    public static void chat(EntityPlayer player, String text) {
+    public static void chat(EntityPlayer player, String text)
+    {
         player.sendMessage(new TextComponentString(text));
     }
 
-    public static void chatWithLocalization(EntityPlayer player, String text) {
+    public static void chatWithLocalization(EntityPlayer player, String text)
+    {
         player.sendMessage(new TextComponentString(I18n.translateToLocal(text)));
     }
 
-    public static void saveToNbt(NBTTagCompound nbt, String name, EnumFacing facing) {
+    public static void saveToNbt(NBTTagCompound nbt, String name, EnumFacing facing)
+    {
         if (facing == null)
             return;
 
         nbt.setByte(name, (byte) facing.ordinal());
     }
 
-    public static EnumFacing facingFromNbt(NBTTagCompound nbt, String name) {
-        if (!nbt.hasKey(name))
-            return null;
+    public static StructureFacing structureFacingFromNbt(NBTTagCompound nbt, String name)
+    {
+        if (!nbt.hasKey(name)) {
+            return StructureFacing.NORTH;
+        }
 
-        return EnumFacing.getFront(nbt.getByte(name));
+        return StructureFacing.getByIndex(nbt.getByte(name)-2);
+
     }
 
-    public static void saveToNbt(NBTTagCompound nbt, String prefix, BlockPos pos) {
+    public static void saveToNbt(NBTTagCompound nbt, String prefix, BlockPos pos)
+    {
         if (pos == null)
             return;
 
@@ -118,7 +131,8 @@ public class Utils {
         nbt.setInteger(prefix + "Z", pos.getZ());
     }
 
-    public static BlockPos posFromNbt(NBTTagCompound nbt, String prefix) {
+    public static BlockPos posFromNbt(NBTTagCompound nbt, String prefix)
+    {
         if (!nbt.hasKey(prefix + "Y"))
             return null;
 
@@ -142,7 +156,8 @@ public class Utils {
      * @param pos
      * @return
      */
-    public static TileEntity getTileEntitySafely(IBlockAccess world, BlockPos pos) {
+    public static TileEntity getTileEntitySafely(IBlockAccess world, BlockPos pos)
+    {
         return world instanceof ChunkCache ? ((ChunkCache) world).getTileEntity(pos, Chunk.EnumCreateEntityType.CHECK) : world.getTileEntity(pos);
     }
 }

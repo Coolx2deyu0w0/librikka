@@ -26,9 +26,13 @@ apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'maven'
 apply plugin: 'maven-publish'
+apply plugin: 'war'
 
 dependencies {
     runtime fileTree(dir: 'libs', include: '*.jar')
+
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
+    providedCompile group: 'org.projectlombok', name: 'lombok', version: '1.18.10'
 }
 
 final def date = new Date()
@@ -59,7 +63,7 @@ minecraft {
 sourceSets {
     main {
         java {
-            srcDir "src"
+            srcDir "main"
         }
     }
 }
