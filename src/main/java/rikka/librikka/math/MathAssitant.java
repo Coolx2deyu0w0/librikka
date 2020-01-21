@@ -2,39 +2,40 @@ package rikka.librikka.math;
 
 import net.minecraft.util.math.MathHelper;
 
-public class MathAssitant {
+public class MathAssitant
+{
     public static final float PI = (float) Math.PI;
-    
-    public static float cosAngle (float angle) {
-    	return MathHelper.cos(angle * 0.01745329252F);
+
+    public static float cosAngle(float angle) {
+        return MathHelper.cos(angle * 0.01745329252F);
     }
-    
-    public static float sinAngle (float angle) {
-    	return MathHelper.sin(angle * 0.01745329252F);
+
+    public static float sinAngle(float angle) {
+        return MathHelper.sin(angle * 0.01745329252F);
     }
-    
-	public static float asinh(float x) {
-		return (float) Math.log(x+MathHelper.sqrt(x*x+1));
-	}
-	
-	public static float acosh(float x) {
-		return (float) Math.log(x+MathHelper.sqrt(x*x-1));
-	}
-	
-	public static float atanh(float x) {
-		return (float) (0.5*Math.log((1+x)/(1-x)));
-	}
-    
-	public static boolean isMin(float val, float... vals) {
-		for (float i: vals) {
-			if (val > i)
-				return false;
-		}
-		return true;
-	}
-    
+
+    public static float asinh(float x) {
+        return (float) Math.log(x + MathHelper.sqrt(x * x + 1));
+    }
+
+    public static float acosh(float x) {
+        return (float) Math.log(x + MathHelper.sqrt(x * x - 1));
+    }
+
+    public static float atanh(float x) {
+        return (float) (0.5 * Math.log((1 + x) / (1 - x)));
+    }
+
+    public static boolean isMin(float val, float... vals) {
+        for (float i : vals) {
+            if (val > i)
+                return false;
+        }
+        return true;
+    }
+
     /**
-     * Calculate the distance between two points (3d)
+     * 计算两个点之间的位置
      *
      * @param xStart Start X coordinate
      * @param yStart Start Y coordinate

@@ -1,13 +1,12 @@
 package rikka.librikka.block;
 
 /**
- * 子类型方块
- *
- * 要是一个方块是某个方块的子类型，就要实现此接口
+ * 实现这个接口的方块都是有子方块的
  */
-public interface ISubBlock {
+public interface ISubBlock
+{
     /**
-     * Only use for subBlocks
+     * 获取所有子方块的名字
      *
      * @return an array of unlocalized names
      */

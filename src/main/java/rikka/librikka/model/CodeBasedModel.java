@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.collect.Sets;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
@@ -18,6 +17,7 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import rikka.librikka.model.loader.EasyTextureLoader;
+import rikka.librikka.rendering.texture.TextureRLMark;
 
 import java.util.Collection;
 import java.util.Set;
@@ -33,7 +33,7 @@ public abstract class CodeBasedModel implements IModel, IBakedModel
     private final Set<ResourceLocation> textures = new HashSet<>();
 
     /**
-     * 初始化。在初始化的过程中将从子类开始所有带有{@link rikka.librikka.model.anno.TextureRLMark}注解的字段全部加入
+     * 初始化。在初始化的过程中将从子类开始所有带有{@link TextureRLMark}注解的字段全部加入
      * texture列表中。
      */
     protected CodeBasedModel()

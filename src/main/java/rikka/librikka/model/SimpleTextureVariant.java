@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 /**
  * A block variant uses the same texture for all 6 sides / An item with single texture
- * [这种“BlockVariant”是六个面都是用同一种纹理的方块]
+ * [这种“Variant”是六个面都是用同一种纹理的方块，比如石头，煤块等]
  *
  * @author Rikka0_0
  */
@@ -34,39 +34,34 @@ public class SimpleTextureVariant extends Variant
      * @param texture the REAL texture path, e.g. sime:tool_multimeter
      * @param isBlock
      */
-    public SimpleTextureVariant(String texture, boolean isBlock)
-    {
+    public SimpleTextureVariant(String texture, boolean isBlock) {
         this(TRSRTransformation.identity(), texture, isBlock);
     }
 
-    private SimpleTextureVariant(IModelState state, String texture, boolean isBlock)
-    {
+    private SimpleTextureVariant(IModelState state, String texture, boolean isBlock) {
         super(
                 isBlock ? SimpleTextureVariant.CUBE_ALL : SimpleTextureVariant.GENERATED,
                 state instanceof ModelRotation ? (ModelRotation) state : ModelRotation.X0_Y0,
-                false, 1
-        );    //uvLock = false, weight always 1
-
+                false, // 什么是UV Lock？大概就是当模型发生旋转的时候纹理不跟着一起旋转
+                1
+        ); // uvLock = false, weight always 1
 
         Builder<String, String> builder = ImmutableMap.builder();
         builder.put(isBlock ? "all" : "layer0", texture);
 
         textures = builder.build();
 
-
-        customData = ImmutableMap.copyOf(new HashMap<String, String>());
+        customData = ImmutableMap.copyOf(new HashMap<>());
         this.state = state;
         isGui3d = isBlock;
     }
 
     @Override
-    public IModelState getState()
-    {
+    public IModelState getState() {
         return this.state;
     }
 
-    private IModel runModelHooks(IModel base, boolean smooth, boolean gui3d, boolean uvlock, ImmutableMap<String, String> textureMap, ImmutableMap<String, String> customData)
-    {
+    private IModel runModelHooks(IModel base, boolean smooth, boolean gui3d, boolean uvlock, ImmutableMap<String, String> textureMap, ImmutableMap<String, String> customData) {
         base = base.process(customData);
         base = base.retexture(textureMap);
         base = base.smoothLighting(smooth);
@@ -76,8 +71,7 @@ public class SimpleTextureVariant extends Variant
     }
 
     @Override
-    public IModel process(IModel base)
-    {
+    public IModel process(IModel base) {
         //base must be cube_all
         //texture string,string {all=minecraft:blocks/diamond_block}
         //ImmutableMap<String, String> customData

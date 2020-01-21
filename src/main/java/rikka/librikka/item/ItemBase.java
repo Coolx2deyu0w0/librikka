@@ -17,8 +17,7 @@ public abstract class ItemBase extends Item
      * @param hasSubItems 是否有子类型的物品。所谓的子类型并非不同颜色的羊毛，而是不同损坏值的同一件物品。
      *                    比如钻石剑就有一千多个子类型物品。
      */
-    public ItemBase(String name, boolean hasSubItems)
-    {
+    public ItemBase(String name, boolean hasSubItems) {
         super();
         super.setUnlocalizedName(name);    //UnlocalizedName = "item." + name
         super.setRegistryName(name);
@@ -38,8 +37,7 @@ public abstract class ItemBase extends Item
      * @return
      */
     @Override
-    public final String getUnlocalizedName(ItemStack itemstack)
-    {
+    public final String getUnlocalizedName(ItemStack itemstack) {
         if (super.getHasSubtypes()) {
             return super.getUnlocalizedName() + "." + this.getSubItemUnlocalizedNames()[itemstack.getItemDamage()];
         } else {
@@ -47,10 +45,13 @@ public abstract class ItemBase extends Item
         }
     }
 
+    /**
+     * 获取此物品的子物品列表
+     */
     @Override
     @SideOnly(Side.CLIENT)
-    public final void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems)
-    {
+    public final void getSubItems(CreativeTabs tab, NonNullList<ItemStack> subItems) {
+        // 如果不是在指定的创造模式物品栏则不向subItems中添加任何的元素
         if (!this.isInCreativeTab(tab)) {
             return;
         }
@@ -65,8 +66,7 @@ public abstract class ItemBase extends Item
     }
 
     @Override
-    public final String getUnlocalizedNameInefficiently(ItemStack stack)
-    {
+    public final String getUnlocalizedNameInefficiently(ItemStack stack) {
         String prevName = super.getUnlocalizedNameInefficiently(stack);
         String domain   = this.getRegistryName().getResourceDomain();
         return "item." + domain + ":" + prevName.substring(5);
@@ -77,8 +77,7 @@ public abstract class ItemBase extends Item
      *
      * @return 一个包含所有子类型非本地话名称的数组，数组的长度就代表了拥有子类型的数量
      */
-    public String[] getSubItemUnlocalizedNames()
-    {
+    public String[] getSubItemUnlocalizedNames() {
         return null;
     }
 }
