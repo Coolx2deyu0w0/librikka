@@ -23,13 +23,25 @@ import rikka.librikka.model.SimpleTextureVariant;
 
 /**
  * 单一贴图模型。这种模型直的是六个面都是用同一贴图的模型。比如各种矿石，石头原石之属。
+ *
+ * @see net.minecraftforge.client.model.IModel IModle
  */
 @SideOnly(Side.CLIENT)
 public class SingleTextureModel implements IModel
 {
-    private final List<ResourceLocation> locations = new ArrayList<>();
-    private final Set<ResourceLocation>  textures  = new HashSet<>();
+    private final List<ResourceLocation> resourceLocations = new ArrayList<>();
+    private final List<ResourceLocation> textures          = new ArrayList<>();
+    /**
+     * 由此可见这个模型只是一个模型的封装
+     */
     private final IModel                 model;
+    /**
+     * 默认的模型状态
+     * <p>
+     * 当一个模型具备“动画效果”时，一个方块状态代表了动画的“一帧”。当然，模型状态是有限的，
+     * 但是随着游戏的渲染刷新率提高时，系统会在两个状态之间做一些“平滑过渡”的操作。这也就意
+     * 味着在实际的屏幕展示中可能会呈现无数种模型状态。<b color=red>另外这一段是我猜的</b>。
+     */
     private final IModelState            defaultState;
 
     /**
@@ -51,7 +63,7 @@ public class SingleTextureModel implements IModel
 
         Variant          variant = new SimpleTextureVariant(resourcePath, isBlock);
         ResourceLocation loc     = variant.getModelLocation();
-        this.locations.add(loc);
+        this.resourceLocations.add(loc);
 
         IModel preModel = ModelLoaderRegistry.getModel(loc);
         this.model = variant.process(preModel);
@@ -73,7 +85,7 @@ public class SingleTextureModel implements IModel
      */
     @Override
     public Collection<ResourceLocation> getDependencies() {
-        return ImmutableList.copyOf(this.locations);
+        return ImmutableList.copyOf(this.resourceLocations);
     }
 
     /**
@@ -88,6 +100,7 @@ public class SingleTextureModel implements IModel
 
     /**
      * 获取此模型的默认状态
+     *
      * @return
      */
     @Override
@@ -97,7 +110,6 @@ public class SingleTextureModel implements IModel
 
     @Override
     public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
-        IBakedModel bakedModel = this.model.bake(MultiModelState.getPartState(state, this.model, 0), format, bakedTextureGetter);
-        return bakedModel;
+        return this.model.bake(MultiModelState.getPartState(state, this.model, 0), format, bakedTextureGetter);
     }
 }
