@@ -45,8 +45,8 @@ public class SingleTextureModel implements IModel
     private final IModelState            defaultState;
 
     /**
-     * 既然是Texture（纹理）就应该是在assets/modid/textures路径下，具体的路径由三个参数共同决定。
-     * 注：路径中间的“../textures/..”应该是mc自己加上的，并不属于此方法逻辑
+     * 这里使用的纹理路径可能并非在一般为方块或是物品绑定贴图时使用的带有“../textures/..”
+     * 的路径，而是自定义的文件路径结构。比如这里就是“modid:blocks/.../xxx.png”。
      *
      * @param domain         命名空间，决定了modid
      * @param textureImgPath 贴图名字，带扩展名的图片文件名。当然了，这个名字也可以用“xxx1/xxx2.png”
@@ -56,12 +56,12 @@ public class SingleTextureModel implements IModel
      */
     public SingleTextureModel(String domain, String textureImgPath, boolean isBlock) throws Exception {
         /*
-         * 拼装路径
+         * 真实的材质图路径
          * 这里拼装成的路径为“[modid]:[blocks or items]/[图片路径.png]”
          */
-        String resourcePath = domain + ":" + (isBlock ? "blocks/" : "items/") + textureImgPath;
+        String realTexturePath = domain + ":" + (isBlock ? "blocks/" : "items/") + textureImgPath;
 
-        Variant          variant = new SimpleTextureVariant(resourcePath, isBlock);
+        Variant          variant = new SimpleTextureVariant(realTexturePath, isBlock);
         ResourceLocation loc     = variant.getModelLocation();
         this.resourceLocations.add(loc);
 

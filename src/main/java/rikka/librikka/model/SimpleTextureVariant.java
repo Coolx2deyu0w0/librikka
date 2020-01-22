@@ -26,16 +26,19 @@ public class SimpleTextureVariant extends Variant
     private static final ResourceLocation CUBE_ALL  = new ResourceLocation("minecraft:block/cube_all");
 
     private final ImmutableMap<String, String> textures;
-    private final ImmutableMap<String, String> customData;
+    /**
+     * 自定义的数据
+     */
+    private final ImmutableMap<String, String> customData = ImmutableMap.of();
     private final IModelState                  state;
     private final boolean                      isGui3d;
 
     /**
-     * @param texture the REAL texture path, e.g. sime:tool_multimeter
-     * @param isBlock
+     * @param realTexturePath 此路径指向一个png文件
+     * @param isBlock         这个文件被应用的模型是否为一个方块
      */
-    public SimpleTextureVariant(String texture, boolean isBlock) {
-        this(TRSRTransformation.identity(), texture, isBlock);
+    public SimpleTextureVariant(String realTexturePath, boolean isBlock) {
+        this(TRSRTransformation.identity(), realTexturePath, isBlock);
     }
 
     private SimpleTextureVariant(IModelState state, String texture, boolean isBlock) {
@@ -46,12 +49,8 @@ public class SimpleTextureVariant extends Variant
                 1
         ); // uvLock = false, weight always 1
 
-        Builder<String, String> builder = ImmutableMap.builder();
-        builder.put(isBlock ? "all" : "layer0", texture);
+        textures = ImmutableMap.of(isBlock ? "all" : "layer0", texture);
 
-        textures = builder.build();
-
-        customData = ImmutableMap.copyOf(new HashMap<>());
         this.state = state;
         isGui3d = isBlock;
     }
@@ -59,15 +58,6 @@ public class SimpleTextureVariant extends Variant
     @Override
     public IModelState getState() {
         return this.state;
-    }
-
-    private IModel runModelHooks(IModel base, boolean smooth, boolean gui3d, boolean uvlock, ImmutableMap<String, String> textureMap, ImmutableMap<String, String> customData) {
-        base = base.process(customData);
-        base = base.retexture(textureMap);
-        base = base.smoothLighting(smooth);
-        base = base.gui3d(gui3d);
-        base = base.uvlock(uvlock);
-        return base;
     }
 
     @Override
@@ -79,4 +69,14 @@ public class SimpleTextureVariant extends Variant
         //						smooth=gui3d=true
         return this.runModelHooks(base, true, this.isGui3d, isUvLock(), this.textures, this.customData);
     }
+
+    private IModel runModelHooks(IModel base, boolean smooth, boolean gui3d, boolean uvlock, ImmutableMap<String, String> textureMap, ImmutableMap<String, String> customData) {
+        base = base.process(customData);
+        base = base.retexture(textureMap);
+        base = base.smoothLighting(smooth);
+        base = base.gui3d(gui3d);
+        base = base.uvlock(uvlock);
+        return base;
+    }
+
 }
