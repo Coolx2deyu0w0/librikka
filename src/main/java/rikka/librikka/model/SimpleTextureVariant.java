@@ -1,7 +1,6 @@
 package rikka.librikka.model;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.ImmutableMap.Builder;
 import net.minecraft.client.renderer.block.model.ModelRotation;
 import net.minecraft.client.renderer.block.model.Variant;
 import net.minecraft.util.ResourceLocation;
@@ -11,11 +10,14 @@ import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import java.util.HashMap;
-
 /**
- * A block variant uses the same texture for all 6 sides / An item with single texture
- * [这种“Variant”是六个面都是用同一种纹理的方块，比如石头，煤块等]
+ * 方块变体指的是方块不同的贴图模式：有的方块的四个侧面与上下两面不同（草方块、竖纹石英），
+ * 有的方块六个面完全相同（石头，矿石）...这些都属于方块变体。MC内置了几种基础的方块变体
+ * （在minecraft:models/block下，以cube开头的几个JSON文件），当然也可以按照格式来添加新
+ * 的变体。在变体JSON文件中使用“#”+名字就意味着以此变体为parent的模型JSON中必须含有
+ * "名字": "纹理路径"这样的键值对来设定该面的纹理坐标。
+ *
+ * 此类支持的方块变体指的是六个面完全相同的变体，即“cube_all”。
  *
  * @author Rikka0_0
  */

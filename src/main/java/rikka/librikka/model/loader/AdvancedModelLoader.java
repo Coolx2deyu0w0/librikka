@@ -1,26 +1,18 @@
-package rikka.librikka.rendering.model.loader;
+package rikka.librikka.model.loader;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.ICustomModelLoader;
 import net.minecraftforge.client.model.IModel;
-import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import rikka.librikka.block.BlockBase;
-import rikka.librikka.item.IVariableTexture;
-import rikka.librikka.rendering.model.SingleTextureModel;
+import rikka.librikka.model.SingleTextureModel;
 import rikka.librikka.model.loader.IModelLoader;
 
 /**

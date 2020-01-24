@@ -1,4 +1,4 @@
-package rikka.librikka.rendering.model;
+package rikka.librikka.model;
 
 import java.util.*;
 import java.util.function.Function;
@@ -19,18 +19,23 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import org.apache.commons.lang3.tuple.Pair;
-import rikka.librikka.model.SimpleTextureVariant;
 
 /**
  * 单一贴图模型。这种模型直的是六个面都是用同一贴图的模型。比如各种矿石，石头原石之属。
+ * <p>
+ * 实际上这个类提供的功能比较简单，用原生的forge也能很轻松的实现。只不过使用这个类以后
+ * 就不用为方块提供JSON文件了。
  *
  * @see net.minecraftforge.client.model.IModel IModle
  */
 @SideOnly(Side.CLIENT)
 public class SingleTextureModel implements IModel
 {
-    private final List<ResourceLocation> resourceLocations = new ArrayList<>();
-    private final List<ResourceLocation> textures          = new ArrayList<>();
+    /**
+     * 此模型使用的模型文件的路径列表
+     */
+    private final List<ResourceLocation> modelRLs = new ArrayList<>();
+    private final List<ResourceLocation> textures = new ArrayList<>();
     /**
      * 由此可见这个模型只是一个模型的封装
      */
@@ -61,11 +66,22 @@ public class SingleTextureModel implements IModel
          */
         String realTexturePath = domain + ":" + (isBlock ? "blocks/" : "items/") + textureImgPath;
 
-        Variant          variant = new SimpleTextureVariant(realTexturePath, isBlock);
-        ResourceLocation loc     = variant.getModelLocation();
-        this.resourceLocations.add(loc);
+        /*
+         * 没搞明白SimpleTextureVariant的含义，它的实例包含了一个png纹理图，从功能上看似乎是用来
+         * 将纹理绑定到模型上的
+         */
+        Variant variant = new SimpleTextureVariant(realTexturePath, isBlock);
 
-        IModel preModel = ModelLoaderRegistry.getModel(loc);
+        ResourceLocation modelRL = variant.getModelLocation();
+        this.modelRLs.add(modelRL);
+
+        /*
+         * 使用RL获取此模型的IModel实例
+         * 这个方法是使用RL来获得IModel的主要方法。从实现上来看若模型没有被加载它也会先加载再返回
+         * 此方法不会返回null
+         */
+        IModel preModel = ModelLoaderRegistry.getModel(modelRL);
+        // 绑定材质
         this.model = variant.process(preModel);
         for (ResourceLocation location : this.model.getDependencies()) {
             ModelLoaderRegistry.getModelOrMissing(location);
@@ -85,7 +101,7 @@ public class SingleTextureModel implements IModel
      */
     @Override
     public Collection<ResourceLocation> getDependencies() {
-        return ImmutableList.copyOf(this.resourceLocations);
+        return ImmutableList.copyOf(this.modelRLs);
     }
 
     /**

@@ -1,4 +1,4 @@
-package rikka.librikka.rendering.inventory;
+package rikka.librikka.model.loader;
 
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.item.Item;
@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * 使用此类来注册物品（和方块）在Inventory界面中显示的图标
  * <p>
- * 逻辑原本存在于{@link rikka.librikka.rendering.model.loader.AdvancedModelLoader}，
+ * 逻辑原本存在于{@link AdvancedModelLoader}，
  * 为了更清晰单独移动到这里。
  *
  * @author Rikka0_0

@@ -1,4 +1,4 @@
-package rikka.librikka.rendering.texture;
+package rikka.librikka.model.loader;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

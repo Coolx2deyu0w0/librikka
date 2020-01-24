@@ -12,8 +12,12 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import rikka.librikka.rendering.texture.TextureRLMark;
 
+/**
+ * 纹理搜索加载器
+ *
+ * 这是一个用于从类的继承树中搜索纹理并将其加载的工具类
+ */
 @SideOnly(Side.CLIENT)
 public class EasyTextureLoader
 {
